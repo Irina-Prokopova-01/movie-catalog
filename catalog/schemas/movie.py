@@ -9,5 +9,16 @@ class BaseMovie(BaseModel):
     rating: float
 
 
-class Movie(BaseMovie):
-    pass
+class CreateMovie(BaseModel):
+    title: str
+    description: str
+    year: int
+    rating: float
+
+
+# Модель для ответа (без поля id)
+class MovieResponse(BaseModel):
+    title: str
+    description: str
+    year: int
+    rating: float
