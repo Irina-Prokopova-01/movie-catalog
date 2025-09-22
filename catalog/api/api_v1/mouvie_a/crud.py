@@ -1,21 +1,21 @@
-from schemas.movie import Movie
+from schemas.movie import BaseMovie
 
 LIST_MOVIES = [
-    Movie(
+    BaseMovie(
         id=1,
         title="Movie 1",
         description="Movie description1",
         year=2020,
         rating=4.5,
     ),
-    Movie(
+    BaseMovie(
         id=2,
         title="Movie 2",
         description="Movie description2",
         year=2025,
         rating=4.7,
     ),
-    Movie(
+    BaseMovie(
         id=3,
         title="Movie 3",
         description="Movie description3",

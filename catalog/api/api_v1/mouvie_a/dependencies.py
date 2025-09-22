@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status, APIRouter
 
 from api.api_v1.mouvie_a.crud import LIST_MOVIES
-from schemas.movie import Movie
+from schemas.movie import BaseMovie
 
 router = APIRouter(
     prefix="/movie",
@@ -9,7 +9,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{movie_id}", response_model=Movie)
+@router.get("/{movie_id}", response_model=BaseMovie)
 def read_movie(id: int):
     for movie in LIST_MOVIES:
         if movie.id == id:

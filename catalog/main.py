@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException, status
 from starlette.requests import Request
-from schemas.movie import Movie
 
 from api import router as api_router
 
