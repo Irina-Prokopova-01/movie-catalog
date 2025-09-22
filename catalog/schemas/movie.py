@@ -2,14 +2,15 @@ from pydantic import BaseModel
 
 
 class BaseMovie(BaseModel):
-    id: int
+    slug: str
     title: str
     description: str
     year: int
     rating: float
 
 
-class CreateMovie(BaseModel):
+class CreateMovie(BaseMovie):
+    slug: str
     title: str
     description: str
     year: int
@@ -18,6 +19,7 @@ class CreateMovie(BaseModel):
 
 # Модель для ответа (без поля id)
 class MovieResponse(BaseModel):
+    slug: str
     title: str
     description: str
     year: int

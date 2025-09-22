@@ -10,11 +10,11 @@ router = APIRouter(
 
 
 @router.get("/{movie_id}", response_model=BaseMovie)
-def read_movie(id: int):
+def read_movie(slug: str):
     for movie in LIST_MOVIES:
-        if movie.id == id:
+        if movie.slug == slug:
             return movie
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"URL {id!r} not found.",
+        detail=f"URL {slug!r} not found.",
     )
