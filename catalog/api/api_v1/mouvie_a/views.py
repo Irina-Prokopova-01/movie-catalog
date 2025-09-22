@@ -19,14 +19,24 @@ def list_all_movies():
     return movies
 
 
+# @router.post(
+#     "/create_movie/",
+#     response_model=BaseMovie,
+#     status_code=status.HTTP_201_CREATED,
+# )
+# def create_movie(movie_create: CreateMovie) -> BaseMovie:
+#     # Генерируем случайный id
+#     movie_id = random.randint(3, 1000)
+#     new_movie = BaseMovie(id=movie_id, **movie_create.model_dump())
+#     movies.append(new_movie)
+#     return BaseMovie(**new_movie.model_dump())
+
+
 @router.post(
     "/create_movie/",
     response_model=BaseMovie,
     status_code=status.HTTP_201_CREATED,
 )
-def create_movie(movie_create: CreateMovie) -> BaseMovie:
-    # Генерируем случайный id
-    movie_id = random.randint(3, 1000)
-    new_movie = BaseMovie(id=movie_id, **movie_create.model_dump())
-    movies.append(new_movie)
-    return BaseMovie(**new_movie.model_dump())
+def create_movie(movie_create: BaseMovie) -> BaseMovie:
+    new_movie = BaseMovie(**movie_create.model_dump())
+    return new_movie
