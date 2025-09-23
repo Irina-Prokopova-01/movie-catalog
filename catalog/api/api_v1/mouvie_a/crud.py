@@ -17,6 +17,12 @@ class Storage(BaseModel):
         self.slug_movies[new_movie.slug] = new_movie
         return new_movie
 
+    def delete_by_slug(self, slug) -> None:
+        self.slug_movies.pop(slug, None)
+
+    def delete(self, movie_delete: BaseMovie) -> None:
+        self.delete_by_slug(slug=movie_delete.slug)
+
 
 storage = Storage()
 
