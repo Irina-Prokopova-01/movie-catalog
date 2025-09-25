@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status, APIRouter
 
 from api.api_v1.mouvie_a.crud import storage
-from schemas.movie import BaseMovie
+from schemas.movie import BaseMovie, Movie
 
 router = APIRouter(
     prefix="/movie",
@@ -9,9 +9,9 @@ router = APIRouter(
 )
 
 
-@router.get("/{movie_slug}", response_model=BaseMovie)
-def read_movie(slug: str) -> BaseMovie:
-    movie: BaseMovie | None = storage.get_by_slug(slug)
+@router.get("/{movie_slug}", response_model=Movie)
+def read_movie(slug: str) -> Movie:
+    movie: Movie | None = storage.get_by_slug(slug)
     if movie:
         return movie
     raise HTTPException(
