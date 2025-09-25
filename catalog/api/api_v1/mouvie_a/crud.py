@@ -6,6 +6,7 @@ from schemas.movie import (
     UpdateMovie,
     UpdatePartialMovie,
     Movie,
+    MovieRead,
 )
 
 
@@ -18,8 +19,8 @@ class Storage(BaseModel):
     def get_by_slug(self, movie_slug) -> Movie | None:
         return self.slug_movies.get(movie_slug)
 
-    def create(self, movie_create_new: CreateMovie) -> Movie:
-        new_movie = Movie(**movie_create_new.model_dump())
+    def create(self, movie_create_new: CreateMovie) -> MovieRead:
+        new_movie = MovieRead(**movie_create_new.model_dump())
         self.slug_movies[new_movie.slug] = new_movie
         return new_movie
 
