@@ -10,14 +10,18 @@ class BaseMovie(BaseModel):
 
 
 class CreateMovie(BaseMovie):
-    slug: str
     title: str
     description: str
     year: int
     rating: float
 
 
-# Модель для ответа (без поля id)
+class UpdateMovie(BaseMovie):
+    title: str
+    description: str
+    year: int
+
+
 class MovieResponse(BaseModel):
     slug: str
     title: str
