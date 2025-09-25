@@ -2,18 +2,13 @@ from pydantic import BaseModel
 
 
 class BaseMovie(BaseModel):
-    slug: str
     title: str
-    description: str
+    description: str = ""
     year: int
-    rating: float
 
 
 class CreateMovie(BaseMovie):
-    title: str
-    description: str
-    year: int
-    rating: float
+    slug: str
 
 
 class UpdateMovie(BaseMovie):
@@ -22,9 +17,11 @@ class UpdateMovie(BaseMovie):
     year: int
 
 
-class MovieResponse(BaseModel):
+class UpdatePartialMovie(BaseMovie):
+    title: str | None = None
+    description: str | None = None
+    year: int | None = None
+
+
+class Movie(BaseMovie):
     slug: str
-    title: str
-    description: str
-    year: int
-    rating: float
