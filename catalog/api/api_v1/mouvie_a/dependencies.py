@@ -16,5 +16,5 @@ def read_movie(slug: str) -> BaseMovie:
         return movie
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"URL {slug!r} not found.",
+        detail=f"Movie {slug!r} not found.",
     )
