@@ -1,9 +1,10 @@
 import logging
 
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI
 from starlette.requests import Request
 
 from api import router as api_router
+from app_lifspan import lifespan
 from core import config
 
 
@@ -13,6 +14,7 @@ logging.basicConfig(
 )
 app = FastAPI(
     title="Movie Catalog",
+    lifespan=lifespan,
 )
 
 app.include_router(api_router)
