@@ -31,4 +31,4 @@ class MovieRead(BaseMovie):
 
 class Movie(BaseMovie):
     slug: str
-    notes: str
+    notes: str = "Hello"

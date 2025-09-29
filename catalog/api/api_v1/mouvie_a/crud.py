@@ -4,7 +4,6 @@ from pydantic import BaseModel, ValidationError
 
 from core.config import MOVIE_STORAGE_FILEPATH
 from schemas.movie import (
-    BaseMovie,
     CreateMovie,
     UpdateMovie,
     UpdatePartialMovie,
@@ -30,14 +29,27 @@ class Storage(BaseModel):
             return Storage()
         return cls.model_validate_json(MOVIE_STORAGE_FILEPATH.read_text())
 
+    def init_storage_from_state(self) -> None:
+        try:
+            data = Storage.from_state()
+        except ValidationError:
+            self.save_state()
+            log.warning("Rewritten storage file")
+            return
+
+        self.slug_movies.update(
+            data.slug_movies,
+        )
+        log.warning("Recovered data from storage file")
+
     def get(self) -> list[Movie]:
         return list(self.slug_movies.values())
 
     def get_by_slug(self, movie_slug) -> Movie | None:
         return self.slug_movies.get(movie_slug)
 
-    def create(self, movie_create_new: CreateMovie) -> MovieRead:
-        new_movie = MovieRead(**movie_create_new.model_dump())
+    def create(self, movie_create_new: CreateMovie) -> Movie:
+        new_movie = Movie(**movie_create_new.model_dump())
         self.slug_movies[new_movie.slug] = new_movie
         self.save_state()
         return new_movie
@@ -64,31 +76,4 @@ class Storage(BaseModel):
         return movie_base
 
 
-try:
-    storage = Storage.from_state()
-    log.warning("Recovered data from storage file")
-except ValidationError:
-    storage = Storage()
-    storage.save_state()
-    log.warning("Rewritten storage file")
-
-
-#
-# storage = Storage()
-#
-# storage.create(
-#     CreateMovie(
-#         slug="movie_3",
-#         title="Movie 3",
-#         description="Movie description3",
-#         year=2025,
-#     )
-# )
-# storage.create(
-#     CreateMovie(
-#         slug="movie_2",
-#         title="Movie 2",
-#         description="Movie description2",
-#         year=2024,
-#     )
-# )
+storage = Storage()
