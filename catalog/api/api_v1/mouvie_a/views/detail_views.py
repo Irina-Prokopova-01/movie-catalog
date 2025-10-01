@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, BackgroundTasks
 
 from api.api_v1.mouvie_a.crud import storage
 from api.api_v1.mouvie_a.dependencies import read_movie
@@ -31,7 +31,9 @@ MOVIE_DEP = Annotated[BaseMovie, Depends(read_movie)]
 )
 def delete_movie_by_slug(
     movie: MOVIE_DEP,
+    background_tasks: BackgroundTasks,
 ) -> None:
+    background_tasks.add_task(storage.save_state)
     storage.delete_by_slug(slug=movie.slug)
 
 
@@ -40,9 +42,9 @@ def delete_movie_by_slug(
     response_model=MovieRead,
 )
 def update_movie(
-    movie: MOVIE_DEP,
-    movie_update: UpdateMovie,
+    movie: MOVIE_DEP, movie_update: UpdateMovie, background_tasks: BackgroundTasks
 ):
+    background_tasks.add_task(storage.save_state)
     return storage.update(
         movie_base=movie,
         movie_update=movie_update,
@@ -56,7 +58,9 @@ def update_movie(
 def update_partial_movie(
     movie: MOVIE_DEP,
     movie_update_in: UpdatePartialMovie,
+    background_tasks: BackgroundTasks,
 ):
+    background_tasks.add_task(storage.save_state)
     return storage.update_partial(
         movie_base=movie,
         movie_update_in=movie_update_in,
