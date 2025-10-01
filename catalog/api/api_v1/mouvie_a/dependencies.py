@@ -1,15 +1,13 @@
-from fastapi import HTTPException, status, APIRouter
+import logging
+
+from fastapi import HTTPException, status, BackgroundTasks
 
 from api.api_v1.mouvie_a.crud import storage
-from schemas.movie import BaseMovie, Movie, MovieRead
+from schemas.movie import Movie
 
-router = APIRouter(
-    prefix="/movie",
-    tags=["Movies_detail"],
-)
+log = logging.getLogger(__name__)
 
 
-@router.get("/{movie_slug}", response_model=MovieRead)
 def read_movie(slug: str) -> Movie:
     movie: Movie | None = storage.get_by_slug(slug)
     if movie:
@@ -18,3 +16,13 @@ def read_movie(slug: str) -> Movie:
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Movie {slug!r} not found.",
     )
+
+
+def save_storage_state(
+    background_tasks: BackgroundTasks,
+):
+    # код выполняемый до
+    log.info("first time inside dependency save_storage_state")
+    yield
+    log.info("Add BackgroundTasks to save_storage")
+    background_tasks.add_task(storage.save_state)
