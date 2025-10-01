@@ -19,6 +19,8 @@ class Storage(BaseModel):
     slug_movies: dict[str, Movie] = {}
 
     def save_state(self) -> None:
+        for _ in range(30_000):
+            MOVIE_STORAGE_FILEPATH.write_text(self.model_dump_json(indent=2))
         MOVIE_STORAGE_FILEPATH.write_text(self.model_dump_json(indent=2))
         log.info(f"Saved movie to storage file.")
 
@@ -51,12 +53,13 @@ class Storage(BaseModel):
     def create(self, movie_create_new: CreateMovie) -> Movie:
         new_movie = Movie(**movie_create_new.model_dump())
         self.slug_movies[new_movie.slug] = new_movie
-        self.save_state()
+        log.info("Created new movie.")
         return new_movie
 
     def delete_by_slug(self, slug) -> None:
         self.slug_movies.pop(slug, None)
-        self.save_state()
+        # self.save_state()
+        log.info("Delete_by_slug movie.")
 
     def delete(self, movie_delete: Movie) -> None:
         self.delete_by_slug(slug=movie_delete.slug)
@@ -64,7 +67,8 @@ class Storage(BaseModel):
     def update(self, movie_base: Movie, movie_update: UpdateMovie) -> Movie:
         for k, v in movie_update:
             setattr(movie_base, k, v)
-        self.save_state()
+        # self.save_state()
+        log.info("Update movie.")
         return movie_base
 
     def update_partial(
@@ -72,7 +76,8 @@ class Storage(BaseModel):
     ) -> Movie:
         for k, v in movie_update_in.model_dump(exclude_unset=True).items():
             setattr(movie_base, k, v)
-        self.save_state()
+        # self.save_state()
+        log.info("Update_partial movie.")
         return movie_base
 
 
