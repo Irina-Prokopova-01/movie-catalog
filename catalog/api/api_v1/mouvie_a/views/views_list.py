@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, BackgroundTasks, Depends
 
 from api.api_v1.mouvie_a.crud import storage
-from api.api_v1.mouvie_a.dependencies import save_storage_state
+from api.api_v1.mouvie_a.dependencies import save_storage_state, api_token_required
 from schemas.movie import BaseMovie, CreateMovie, MovieRead
 
 router = APIRouter(
@@ -24,6 +24,9 @@ def list_all_movies() -> list[BaseMovie]:
 def create_movie(
     movie_create_new: CreateMovie,
     # background_tasks: BackgroundTasks,
+    _=Depends(
+        api_token_required,
+    ),
 ) -> BaseMovie:
     # background_tasks.add_task(storage.save_state)
     return storage.create(movie_create_new)
