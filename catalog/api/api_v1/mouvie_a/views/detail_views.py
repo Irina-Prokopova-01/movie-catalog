@@ -9,8 +9,8 @@ from schemas.movie import BaseMovie, UpdateMovie, UpdatePartialMovie, MovieRead
 router = APIRouter(
     prefix="/movies",
     responses={
-        status.HTTP_404_NOT_FOUND: {
-            "description": "Short URL not found",
+        status.HTTP_401_UNAUTHORIZED: {
+            "description": "Unauthenticated. Only for unsafe methods.",
             "content": {
                 "application/json": {
                     "example": {
