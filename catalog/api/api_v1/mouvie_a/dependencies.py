@@ -1,4 +1,6 @@
 import logging
+from idlelib.query import Query
+from typing import Annotated
 
 from fastapi import (
     HTTPException,
@@ -8,6 +10,7 @@ from fastapi import (
 )
 
 from api.api_v1.mouvie_a.crud import storage
+from core.config import API_TOKENS
 from schemas.movie import Movie
 
 log = logging.getLogger(__name__)
@@ -36,3 +39,16 @@ def save_storage_state(
     if request.method in UNSAFE_METHODS:
         log.info("Add BackgroundTasks to save_storage")
         background_tasks.add_task(storage.save_state)
+
+
+def api_token_required(
+    api_token: Annotated[
+        str,
+        Query,
+    ],
+):
+    if api_token not in API_TOKENS:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid API token",
+        )
