@@ -9,7 +9,17 @@ from fastapi import (
     Request,
     Header,
 )
+from fastapi.params import Depends
+from fastapi.security import (
+    HTTPAuthorizationCredentials,
+    HTTPBearer,
+)
 
+static_api_token = HTTPBearer(
+    scheme_name="Static API Token",
+    description="**API token** fot developer. [Read more](#)",
+    auto_error=False,
+)
 from api.api_v1.mouvie_a.crud import storage
 from core.config import API_TOKENS
 from schemas.movie import Movie
@@ -45,13 +55,19 @@ def save_storage_state(
 def api_token_required_for_unsafe_methods(
     request: Request,
     api_token: Annotated[
-        str,
-        Header(alias="x-auth-token"),
-    ] = "",
+        HTTPAuthorizationCredentials | None,
+        Depends(static_api_token),
+    ] = None,
 ):
+    log.info("Api token %s", api_token)
     if request.method not in UNSAFE_METHODS:
         return
-    if api_token not in API_TOKENS:
+    if not api_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="API token is required.",
+        )
+    if api_token.credentials not in API_TOKENS:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid API token",
