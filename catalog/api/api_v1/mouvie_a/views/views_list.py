@@ -1,13 +1,19 @@
 from fastapi import APIRouter, status, BackgroundTasks, Depends
 
 from api.api_v1.mouvie_a.crud import storage
-from api.api_v1.mouvie_a.dependencies import save_storage_state, api_token_required
+from api.api_v1.mouvie_a.dependencies import (
+    save_storage_state,
+    api_token_required_for_unsafe_methods,
+)
 from schemas.movie import BaseMovie, CreateMovie, MovieRead
 
 router = APIRouter(
     prefix="/movies",
     tags=["Movies_list"],
-    dependencies=[Depends(save_storage_state)],
+    dependencies=[
+        Depends(save_storage_state),
+        Depends(api_token_required_for_unsafe_methods),
+    ],
 )
 
 
@@ -24,9 +30,7 @@ def list_all_movies() -> list[BaseMovie]:
 def create_movie(
     movie_create_new: CreateMovie,
     # background_tasks: BackgroundTasks,
-    _=Depends(
-        api_token_required,
-    ),
+    # _=Depends(api_token_required,),
 ) -> BaseMovie:
     # background_tasks.add_task(storage.save_state)
     return storage.create(movie_create_new)
