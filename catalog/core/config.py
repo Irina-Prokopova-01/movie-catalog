@@ -18,6 +18,6 @@ API_TOKENS: frozenset[str] = frozenset(
 )
 
 USERS_DB: dict[str, str] = {
-    "sam": "passw",
-    "bob": "pass",
+    "sam": "passw1",
+    "bob": "pass2",
 }
