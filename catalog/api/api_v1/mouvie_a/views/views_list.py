@@ -4,7 +4,7 @@ from api.api_v1.mouvie_a.crud import storage
 from api.api_v1.mouvie_a.dependencies import (
     save_storage_state,
     # api_token_required_for_unsafe_methods,
-    user_basic_auth_required,
+    user_basic_auth_required_for_unsafe_methods,
 )
 from schemas.movie import BaseMovie, CreateMovie, MovieRead
 
@@ -14,6 +14,7 @@ router = APIRouter(
     dependencies=[
         Depends(save_storage_state),
         # Depends(api_token_required_for_unsafe_methods),
+        Depends(user_basic_auth_required_for_unsafe_methods),
     ],
 )
 
@@ -27,7 +28,7 @@ def list_all_movies() -> list[BaseMovie]:
     "/create_movie/",
     response_model=MovieRead,
     status_code=status.HTTP_201_CREATED,
-    dependencies=[Depends(user_basic_auth_required)],
+    # dependencies=[Depends(user_basic_auth_required)],
 )
 def create_movie(
     movie_create_new: CreateMovie,
