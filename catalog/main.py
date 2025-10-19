@@ -1,5 +1,6 @@
 import logging
 
+import uvicorn
 from fastapi import FastAPI
 from starlette.requests import Request
 
@@ -30,3 +31,7 @@ def read_root(request: Request):
         "massage": "Hello World",
         "url": str(url_docs),
     }
+
+
+if __name__ == "__main__":
+    uvicorn.run(app="main:app", reload=True)
