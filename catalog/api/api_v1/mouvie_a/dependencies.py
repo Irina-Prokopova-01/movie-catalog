@@ -67,11 +67,9 @@ def save_storage_state(
         background_tasks.add_task(storage.save_state)
 
 
-def validate_api_token(
-    api_token: HTTPAuthorizationCredentials | None, redis_token=None
-):
-    if redis_tokens.sismember(
-        REDIS_TOKENS_SET_NAME,
+def validate_api_token(api_token: HTTPAuthorizationCredentials):
+    if redis_tokens.token_exists(
+        # REDIS_TOKENS_SET_NAME,
         api_token.credentials,
     ):
         return
