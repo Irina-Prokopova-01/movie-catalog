@@ -18,7 +18,7 @@ from fastapi.security import (
 )
 
 from api.api_v1.mouvie_a.crud import storage
-from api.api_v1.mouvie_a.redis import redis_tokens
+from api.api_v1.auth.services import redis_tokens, redis_users
 from core.config import (
     # API_TOKENS,
     USERS_DB,
@@ -98,10 +98,9 @@ def api_token_required_for_unsafe_methods(
 
 
 def validate_basic_auth(credentials: HTTPBasicCredentials | None):
-    if (
-        credentials
-        and credentials.username in USERS_DB
-        and USERS_DB[credentials.username] == credentials.password
+    if credentials and redis_users.validate_user_password(
+        credentials.username,
+        credentials.password,
     ):
         return
     raise HTTPException(
