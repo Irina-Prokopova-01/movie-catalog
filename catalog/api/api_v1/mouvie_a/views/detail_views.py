@@ -7,7 +7,7 @@ from api.api_v1.mouvie_a.dependencies import read_movie
 from schemas.movie import BaseMovie, UpdateMovie, UpdatePartialMovie, MovieRead
 
 router = APIRouter(
-    prefix="/movies",
+    prefix="/{slug}",
     responses={
         status.HTTP_401_UNAUTHORIZED: {
             "description": "Unauthenticated. Only for unsafe methods.",
@@ -25,8 +25,13 @@ router = APIRouter(
 MOVIE_DEP = Annotated[BaseMovie, Depends(read_movie)]
 
 
+@router.get("/", response_model=MovieRead)
+def read_movie_detail(url: MOVIE_DEP):
+    return url
+
+
 @router.delete(
-    "/{slug}",
+    "/",
     status_code=status.HTTP_204_NO_CONTENT,
 )
 def delete_movie_by_slug(
@@ -38,7 +43,7 @@ def delete_movie_by_slug(
 
 
 @router.put(
-    "/{slug}",
+    "/",
     response_model=MovieRead,
 )
 def update_movie(
@@ -54,7 +59,7 @@ def update_movie(
 
 
 @router.patch(
-    "/{slug}",
+    "/",
     response_model=MovieRead,
 )
 def update_partial_movie(
