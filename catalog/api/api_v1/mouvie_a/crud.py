@@ -1,7 +1,9 @@
 import logging
 
 from pydantic import BaseModel, ValidationError
+from redis import Redis
 
+from core import config
 from core.config import MOVIE_STORAGE_FILEPATH
 from schemas.movie import (
     CreateMovie,
@@ -11,6 +13,12 @@ from schemas.movie import (
     MovieRead,
 )
 
+redis = Redis(
+    host=config.REDIS_HOST,
+    port=config.REDIS_PORT,
+    db=config.REDIS_DB_MOVIES,
+    decode_responses=True,
+)
 
 log = logging.getLogger(__name__)
 
@@ -52,7 +60,12 @@ class Storage(BaseModel):
 
     def create(self, movie_create_new: CreateMovie) -> Movie:
         new_movie = Movie(**movie_create_new.model_dump())
-        self.slug_movies[new_movie.slug] = new_movie
+        redis.hset(
+            name=config.REDIS_MOVIES_HASH_NAME,
+            key=new_movie.slug,
+            value=new_movie.model_dump_json(),
+        )
+        # self.slug_movies[new_movie.slug] = new_movie
         log.info("Created new movie.")
         return new_movie
 
