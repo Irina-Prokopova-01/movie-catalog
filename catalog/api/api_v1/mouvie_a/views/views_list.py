@@ -21,13 +21,13 @@ router = APIRouter(
 )
 
 
-@router.get("/list_movies/", response_model=list[MovieRead])
+@router.get("/", response_model=list[MovieRead])
 def list_all_movies() -> list[BaseMovie]:
     return storage.get()
 
 
 @router.post(
-    "/create_movie/",
+    "/",
     response_model=MovieRead,
     status_code=status.HTTP_201_CREATED,
     # dependencies=[Depends(user_basic_auth_required)],
