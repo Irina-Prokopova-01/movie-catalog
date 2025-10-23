@@ -29,6 +29,18 @@ def list_all_movies() -> list[BaseMovie]:
     response_model=MovieRead,
     status_code=status.HTTP_201_CREATED,
     # dependencies=[Depends(user_basic_auth_required)],
+    responses={
+        status.HTTP_409_CONFLICT: {
+            "description": "A movie already exists.",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Movie with slug='name' already exists.",
+                    },
+                },
+            },
+        },
+    },
 )
 def create_movie(
     movie_create_new: CreateMovie,
