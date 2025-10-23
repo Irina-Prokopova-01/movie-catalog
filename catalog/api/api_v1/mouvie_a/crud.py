@@ -52,6 +52,13 @@ class Storage(BaseModel):
         )
         log.warning("Recovered data from storage file")
 
+    def save_movie(self, new_movie: Movie) -> None:
+        redis.hset(
+            name=config.REDIS_MOVIES_HASH_NAME,
+            key=new_movie.slug,
+            value=new_movie.model_dump_json(),
+        )
+
     def get(self) -> list[Movie]:
         return [
             Movie.model_validate_json(movie)
@@ -67,11 +74,7 @@ class Storage(BaseModel):
 
     def create(self, movie_create_new: CreateMovie) -> Movie:
         new_movie = Movie(**movie_create_new.model_dump())
-        redis.hset(
-            name=config.REDIS_MOVIES_HASH_NAME,
-            key=new_movie.slug,
-            value=new_movie.model_dump_json(),
-        )
+        self.save_movie(new_movie)
         # self.slug_movies[new_movie.slug] = new_movie
         log.info("Created new movie.")
         return new_movie
@@ -87,6 +90,7 @@ class Storage(BaseModel):
     def update(self, movie_base: Movie, movie_update: UpdateMovie) -> Movie:
         for k, v in movie_update:
             setattr(movie_base, k, v)
+        self.save_movie(movie_base)
         # self.save_state()
         log.info("Update movie.")
         return movie_base
@@ -97,6 +101,7 @@ class Storage(BaseModel):
         for k, v in movie_update_in.model_dump(exclude_unset=True).items():
             setattr(movie_base, k, v)
         # self.save_state()
+        self.save_movie(movie_base)
         log.info("Update_partial movie.")
         return movie_base
 
