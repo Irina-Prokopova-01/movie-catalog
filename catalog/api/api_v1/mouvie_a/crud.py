@@ -24,33 +24,6 @@ log = logging.getLogger(__name__)
 
 
 class Storage(BaseModel):
-    slug_movies: dict[str, Movie] = {}
-
-    def save_state(self) -> None:
-        for _ in range(30_000):
-            MOVIE_STORAGE_FILEPATH.write_text(self.model_dump_json(indent=2))
-        MOVIE_STORAGE_FILEPATH.write_text(self.model_dump_json(indent=2))
-        log.info(f"Saved movie to storage file.")
-
-    @classmethod
-    def from_state(cls) -> "Storage":
-        if not MOVIE_STORAGE_FILEPATH.exists():
-            log.info(f"Movie to storage file does not exist.")
-            return Storage()
-        return cls.model_validate_json(MOVIE_STORAGE_FILEPATH.read_text())
-
-    def init_storage_from_state(self) -> None:
-        try:
-            data = Storage.from_state()
-        except ValidationError:
-            self.save_state()
-            log.warning("Rewritten storage file")
-            return
-
-        self.slug_movies.update(
-            data.slug_movies,
-        )
-        log.warning("Recovered data from storage file")
 
     def save_movie(self, new_movie: Movie) -> None:
         redis.hset(

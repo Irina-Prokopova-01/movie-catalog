@@ -54,19 +54,6 @@ def read_movie(slug: str) -> Movie:
     )
 
 
-def save_storage_state(
-    background_tasks: BackgroundTasks,
-    request: Request,
-):
-    log.info("Incoming %r request", request.method)
-    # код выполняемый до
-    log.info("first time inside dependency save_storage_state")
-    yield
-    if request.method in UNSAFE_METHODS:
-        log.info("Add BackgroundTasks to save_storage")
-        background_tasks.add_task(storage.save_state)
-
-
 def validate_api_token(api_token: HTTPAuthorizationCredentials):
     if redis_tokens.token_exists(
         # REDIS_TOKENS_SET_NAME,
