@@ -39,6 +39,6 @@ def create_movie(
         return storage.create(movie_create_new)
     raise HTTPException(
         status_code=status.HTTP_409_CONFLICT,
-        detail=f"Short URL with slug={movie_create_new.slug!r} already exists",
+        detail=f"Movie URL with slug={movie_create_new.slug!r} already exists",
     )
     # background_tasks.add_task(storage.save_state)
