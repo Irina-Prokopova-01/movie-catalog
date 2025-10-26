@@ -10,7 +10,7 @@ class RedisTokensHelper(AbstractTokensHelper):
         host: str,
         port: int,
         db: int,
-        token_set_name: str,
+        tokens_set_name: str,
     ) -> None:
         self.redis = Redis(
             host=host,
@@ -18,18 +18,26 @@ class RedisTokensHelper(AbstractTokensHelper):
             db=db,
             decode_responses=True,
         )
-        self.token_set = token_set_name
+        self.tokens_set = tokens_set_name
 
     def token_exists(self, token: str) -> bool:
-        return bool(self.redis.sismember(self.token_set, token))
+        return bool(
+            self.redis.sismember(
+                self.tokens_set,
+                token,
+            )
+        )
 
     def add_token(self, token: str) -> None:
-        self.redis.sadd(self.token_set, token)
+        self.redis.sadd(self.tokens_set, token)
+
+    def get_tokens(self) -> list[str]:
+        return list(self.redis.smembers(self.tokens_set))
 
 
 redis_tokens = RedisTokensHelper(
     host=config.REDIS_HOST,
     port=config.REDIS_PORT,
     db=config.REDIS_DB_TOKENS,
-    token_set_name=config.REDIS_TOKENS_SET_NAME,
+    tokens_set_name=config.REDIS_TOKENS_SET_NAME,
 )
