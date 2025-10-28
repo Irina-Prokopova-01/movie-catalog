@@ -17,7 +17,7 @@ class UpdateMovie(BaseMovie):
     year: int
 
 
-class UpdatePartialMovie(BaseMovie):
+class UpdatePartialMovie(BaseModel):
     title: str | None = None
     description: str | None = None
     year: int | None = None
@@ -27,7 +27,7 @@ class MovieRead(BaseMovie):
     """Модель для чтения данных о фильмах"""
 
     slug: str
-
+    description: str
 
 class Movie(BaseMovie):
     slug: str

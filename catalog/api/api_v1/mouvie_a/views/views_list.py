@@ -6,7 +6,7 @@ from api.api_v1.mouvie_a.dependencies import (
     user_basic_auth_required_for_unsafe_methods,
     api_token_or_user_basic_auth_required_for_unsafe_methods,
 )
-from schemas.movie import BaseMovie, CreateMovie, MovieRead
+from schemas.movie import BaseMovie, CreateMovie, MovieRead, Movie
 
 router = APIRouter(
     prefix="/movies",
@@ -20,7 +20,7 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[MovieRead])
-def list_all_movies() -> list[BaseMovie]:
+def list_all_movies() -> list[Movie]:
     return storage.get()
 
 

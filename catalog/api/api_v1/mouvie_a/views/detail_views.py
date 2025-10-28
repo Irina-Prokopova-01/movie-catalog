@@ -4,7 +4,7 @@ from fastapi import APIRouter, status, Depends
 
 from api.api_v1.mouvie_a.crud import storage
 from api.api_v1.mouvie_a.dependencies import read_movie
-from schemas.movie import BaseMovie, UpdateMovie, UpdatePartialMovie, MovieRead
+from schemas.movie import BaseMovie, UpdateMovie, UpdatePartialMovie, MovieRead, Movie
 
 router = APIRouter(
     prefix="/{slug}",
@@ -22,7 +22,7 @@ router = APIRouter(
     },
 )
 
-MOVIE_DEP = Annotated[BaseMovie, Depends(read_movie)]
+MOVIE_DEP = Annotated[Movie, Depends(read_movie)]
 
 
 @router.get("/", response_model=MovieRead)
@@ -36,9 +36,7 @@ def read_movie_detail(url: MOVIE_DEP):
 )
 def delete_movie_by_slug(
     movie: MOVIE_DEP,
-    # background_tasks: BackgroundTasks,
 ) -> None:
-    # background_tasks.add_task(storage.save_state)
     storage.delete_by_slug(slug=movie.slug)
 
 

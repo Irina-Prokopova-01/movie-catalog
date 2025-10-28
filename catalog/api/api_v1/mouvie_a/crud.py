@@ -1,4 +1,5 @@
 import logging
+from typing import cast, Iterable
 
 from pydantic import BaseModel, ValidationError
 from redis import Redis
@@ -47,7 +48,9 @@ class Storage(BaseModel):
     def get(self) -> list[Movie]:
         return [
             Movie.model_validate_json(movie)
-            for movie in redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+            for movie in cast(
+                Iterable[str], redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+            )
         ]
 
     def get_by_slug(self, movie_slug: str) -> Movie | None:
@@ -55,25 +58,31 @@ class Storage(BaseModel):
             name=config.REDIS_MOVIES_HASH_NAME,
             key=movie_slug,
         ):
+            assert isinstance(data, str)
             return Movie.model_validate_json(data)
+        return None
 
     def exists(
         self,
         slug: str,
     ) -> bool:
-        return redis.hexists(
-            name=config.REDIS_MOVIES_HASH_NAME,
-            key=slug,
+        return cast(
+            bool,
+            redis.hexists(
+                name=config.REDIS_MOVIES_HASH_NAME,
+                key=slug,
+            ),
         )
 
     def create(self, movie_create_new: CreateMovie) -> Movie:
-        new_movie = Movie(**movie_create_new.model_dump())
+        new_movie = Movie(
+            **movie_create_new.model_dump(),
+        )
         self.save_movie(new_movie)
-        # self.slug_movies[new_movie.slug] = new_movie
         log.info("Created new movie.")
         return new_movie
 
-    def create_or_raise_if_exists(self, movie_in: Movie) -> Movie:
+    def create_or_raise_if_exists(self, movie_in: CreateMovie) -> Movie:
         if not self.exists(movie_in.slug):
             return self.create(movie_in)
 

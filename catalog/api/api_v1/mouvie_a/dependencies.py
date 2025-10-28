@@ -1,5 +1,4 @@
 import logging
-from idlelib.query import Query
 from typing import Annotated
 
 from fastapi import (
