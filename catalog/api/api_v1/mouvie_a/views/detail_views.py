@@ -26,7 +26,7 @@ MOVIE_DEP = Annotated[Movie, Depends(read_movie)]
 
 
 @router.get("/", response_model=MovieRead)
-def read_movie_detail(url: MOVIE_DEP):
+def read_movie_detail(url: MOVIE_DEP) -> Movie:
     return url
 
 
@@ -48,7 +48,7 @@ def update_movie(
     movie: MOVIE_DEP,
     movie_update: UpdateMovie,
     # background_tasks: BackgroundTasks,
-):
+) -> Movie:
     # background_tasks.add_task(storage.save_state)
     return storage.update(
         movie_base=movie,
@@ -64,7 +64,7 @@ def update_partial_movie(
     movie: MOVIE_DEP,
     movie_update_in: UpdatePartialMovie,
     # background_tasks: BackgroundTasks,
-):
+) -> Movie:
     # background_tasks.add_task(storage.save_state)
     return storage.update_partial(
         movie_base=movie,

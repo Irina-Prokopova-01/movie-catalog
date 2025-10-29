@@ -88,7 +88,7 @@ class Storage(BaseModel):
 
         raise MovieAlreadyExistsError(f"Movie {movie_in.slug} already exists.")
 
-    def delete_by_slug(self, slug) -> None:
+    def delete_by_slug(self, slug: str) -> None:
         redis.hdel(
             config.REDIS_MOVIES_HASH_NAME,
             slug,

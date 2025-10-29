@@ -34,7 +34,7 @@ class AbstractTokensHelper(ABC):
         """
 
     @classmethod
-    def generate_token(cls):
+    def generate_token(cls) -> str:
         return secrets.token_urlsafe(16)
 
     def generate_and_save_token(self) -> str:
