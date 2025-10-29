@@ -1,17 +1,14 @@
 import logging
-from typing import cast, Iterable
-
-from pydantic import BaseModel, ValidationError
-from redis import Redis
+from typing import Iterable, cast
 
 from core import config
-from core.config import MOVIE_STORAGE_FILEPATH
+from pydantic import BaseModel
+from redis import Redis
 from schemas.movie import (
     CreateMovie,
+    Movie,
     UpdateMovie,
     UpdatePartialMovie,
-    Movie,
-    MovieRead,
 )
 
 redis = Redis(

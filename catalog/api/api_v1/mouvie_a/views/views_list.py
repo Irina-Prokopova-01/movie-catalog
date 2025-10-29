@@ -1,12 +1,10 @@
-from fastapi import APIRouter, status, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
+from schemas.movie import BaseMovie, CreateMovie, Movie, MovieRead
 
-from api.api_v1.mouvie_a.crud import storage, MovieAlreadyExistsError
+from api.api_v1.mouvie_a.crud import MovieAlreadyExistsError, storage
 from api.api_v1.mouvie_a.dependencies import (
-    # api_token_required_for_unsafe_methods,
-    user_basic_auth_required_for_unsafe_methods,
     api_token_or_user_basic_auth_required_for_unsafe_methods,
 )
-from schemas.movie import BaseMovie, CreateMovie, MovieRead, Movie
 
 router = APIRouter(
     prefix="/movies",

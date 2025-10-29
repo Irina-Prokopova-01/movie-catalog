@@ -3,27 +3,20 @@ from typing import Annotated
 
 from fastapi import (
     HTTPException,
-    status,
-    BackgroundTasks,
     Request,
-    Header,
+    status,
 )
 from fastapi.params import Depends
 from fastapi.security import (
     HTTPAuthorizationCredentials,
-    HTTPBearer,
     HTTPBasic,
     HTTPBasicCredentials,
-)
-
-from api.api_v1.mouvie_a.crud import storage
-from api.api_v1.auth.services import redis_tokens, redis_users
-from core.config import (
-    # API_TOKENS,
-    USERS_DB,
-    REDIS_TOKENS_SET_NAME,
+    HTTPBearer,
 )
 from schemas.movie import Movie
+
+from api.api_v1.auth.services import redis_tokens, redis_users
+from api.api_v1.mouvie_a.crud import storage
 
 log = logging.getLogger(__name__)
 

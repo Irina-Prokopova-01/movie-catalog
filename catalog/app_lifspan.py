@@ -3,8 +3,6 @@ from typing import AsyncIterator
 
 from fastapi import FastAPI
 
-from api.api_v1.mouvie_a.crud import storage
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
