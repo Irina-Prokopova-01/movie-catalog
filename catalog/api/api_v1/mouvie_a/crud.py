@@ -46,7 +46,7 @@ class Storage(BaseModel):
         return [
             Movie.model_validate_json(movie)
             for movie in cast(
-                Iterable[str], redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+                Iterable[str], redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
             )
         ]
 
@@ -105,7 +105,7 @@ class Storage(BaseModel):
         return movie_base
 
     def update_partial(
-        self, movie_base: Movie, movie_update_in: UpdatePartialMovie
+        self, movie_base: Movie, movie_update_in: UpdatePartialMovie,
     ) -> Movie:
         for k, v in movie_update_in.model_dump(exclude_unset=True).items():
             setattr(movie_base, k, v)

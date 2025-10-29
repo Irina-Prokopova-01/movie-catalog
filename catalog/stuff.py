@@ -19,7 +19,7 @@ def main() -> None:
             redis.get("name"),
             redis.get("foo"),
             redis.get("spam"),
-        ]
+        ],
     )
     redis.delete("name")
     print(redis.get("name"))
