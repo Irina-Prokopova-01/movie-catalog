@@ -1,5 +1,8 @@
+__all__ = ("storage",)
+
 import logging
-from typing import Iterable, cast
+from collections.abc import Iterable
+from typing import cast
 
 from core import config
 from pydantic import BaseModel
@@ -46,7 +49,8 @@ class Storage(BaseModel):
         return [
             Movie.model_validate_json(movie)
             for movie in cast(
-                Iterable[str], redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
+                Iterable[str],
+                redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
             )
         ]
 
@@ -83,7 +87,8 @@ class Storage(BaseModel):
         if not self.exists(movie_in.slug):
             return self.create(movie_in)
 
-        raise MovieAlreadyExistsError(f"Movie {movie_in.slug} already exists.")
+        msg = f"Movie {movie_in.slug} already exists."
+        raise MovieAlreadyExistsError(msg)
 
     def delete_by_slug(self, slug: str) -> None:
         redis.hdel(
@@ -105,7 +110,9 @@ class Storage(BaseModel):
         return movie_base
 
     def update_partial(
-        self, movie_base: Movie, movie_update_in: UpdatePartialMovie,
+        self,
+        movie_base: Movie,
+        movie_update_in: UpdatePartialMovie,
     ) -> Movie:
         for k, v in movie_update_in.model_dump(exclude_unset=True).items():
             setattr(movie_base, k, v)

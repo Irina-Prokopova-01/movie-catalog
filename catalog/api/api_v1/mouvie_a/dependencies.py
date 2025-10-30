@@ -112,7 +112,7 @@ def api_token_or_user_basic_auth_required_for_unsafe_methods(
     ] = None,
 ) -> None:
     if request.method not in UNSAFE_METHODS:
-        return
+        return None
 
     if api_token:
         return validate_api_token(api_token=api_token)
