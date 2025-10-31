@@ -14,7 +14,10 @@ class BaseMovie(BaseModel):
 
 
 class CreateMovie(BaseMovie):
-    slug: str
+    slug: Annotated[
+        str,
+        Len(min_length=2, max_length=15),
+    ]
 
 
 class UpdateMovie(BaseMovie):
