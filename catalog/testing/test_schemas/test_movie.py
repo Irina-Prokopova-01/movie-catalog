@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from dns.update import Update
+from pydantic import ValidationError
 
 from schemas.movie import CreateMovie, Movie, UpdateMovie, UpdatePartialMovie
 
@@ -100,3 +101,30 @@ class MovieCreateTestCase(TestCase):
                     title,
                     movie_in.model_dump(mode="json")["title"],
                 )
+
+    def test_movie_slug_to_short(self) -> None:
+        with self.assertRaises(ValidationError) as exc_info:
+            CreateMovie(
+                slug="s",
+                description="Some description",
+                title="Some title",
+                year=1999,
+            )
+        print(exc_info.exception)
+        print(exc_info.exception.json())
+        print(exc_info.exception.errors())
+        error_details = exc_info.exception.errors()[0]
+        expected_type = "string_too_short"
+        self.assertEqual(expected_type, error_details["type"])
+
+    def test_movie_slug_to_regex(self) -> None:
+        with self.assertRaisesRegex(
+            ValidationError,
+            expected_regex="String should have at least 2 characters",
+        ):
+            CreateMovie(
+                slug="s",
+                description="Some description",
+                title="Some title",
+                year=1999,
+            )
