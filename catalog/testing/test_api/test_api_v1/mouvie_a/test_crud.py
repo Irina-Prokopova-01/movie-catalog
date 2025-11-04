@@ -6,7 +6,12 @@ from unittest import TestCase
 from os import getenv
 
 from api.api_v1.mouvie_a.crud import storage
-from schemas.movie import CreateMovie, UpdateMovie, Movie, UpdatePartialMovie
+from schemas.movie import (
+    CreateMovie,
+    UpdateMovie,
+    Movie,
+    UpdatePartialMovie,
+)
 
 if getenv("TESTING") != "1":
     raise OSError(
@@ -18,16 +23,24 @@ class MovieStorageUpdateTestCase(TestCase):
     def setUp(self) -> None:
         self.movie = self.create_movie()
 
+    def tearDown(self) -> None:
+        storage.delete(self.movie)
+
     def create_movie(self) -> Movie:
         movie_create_new = CreateMovie(
-            slug="".join(random.choices(string.ascii_uppercase + string.digits, k=8)),
+            slug="".join(
+                random.choices(
+                    string.ascii_uppercase + string.digits,
+                    k=8,
+                )
+            ),
             title="Movie Title",
             description="Movie Description",
             year=1999,
         )
         return storage.create(movie_create_new)
 
-    def test_update_movie(self):
+    def test_update_movie(self) -> None:
         # movie = self.create_movie()
         movie_update = UpdateMovie(
             **self.movie.model_dump(),
