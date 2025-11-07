@@ -3,11 +3,6 @@ from unittest import TestCase
 from catalog.api.api_v1.auth.services import redis_tokens
 from os import getenv
 
-if getenv("TESTING") != "1":
-    raise OSError(
-        "Environment is not ready for redis testing",
-    )
-
 
 class RedisTokensHelperTestCase(TestCase):
     def test_generate_and_save_token(self) -> None:

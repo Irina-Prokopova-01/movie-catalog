@@ -16,11 +16,6 @@ from schemas.movie import (
     UpdatePartialMovie,
 )
 
-if getenv("TESTING") != "1":
-    pytest.exit(  # noqa: TRY003
-        "Environment is not ready for pytest testing",  # noqa: EM101
-    )
-
 
 def create_movie() -> Movie:
     movie_create_new = CreateMovie(
