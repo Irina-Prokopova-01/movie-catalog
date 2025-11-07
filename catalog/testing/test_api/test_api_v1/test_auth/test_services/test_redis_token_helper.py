@@ -5,7 +5,7 @@ from os import getenv
 
 if getenv("TESTING") != "1":
     raise OSError(
-        "Environment is not ready for testing",
+        "Environment is not ready for redis testing",
     )
 
 
