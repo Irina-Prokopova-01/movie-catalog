@@ -6,6 +6,8 @@ from unittest import TestCase
 
 from os import getenv
 
+import pytest
+
 from api.api_v1.mouvie_a.crud import storage
 from schemas.movie import (
     CreateMovie,
@@ -15,8 +17,8 @@ from schemas.movie import (
 )
 
 if getenv("TESTING") != "1":
-    raise OSError(
-        "Environment is not ready for testing",
+    pytest.exit(  # noqa: TRY003
+        "Environment is not ready for pytest testing",  # noqa: EM101
     )
 
 
@@ -37,6 +39,10 @@ def create_movie() -> Movie:
 
 class MovieStorageUpdateTestCase(TestCase):
     def setUp(self) -> None:
+        if getenv("TESTING") != "1":
+            raise OSError(
+                "Environment is not ready for redis testing",
+            )
         self.movie = create_movie()
 
     def tearDown(self) -> None:
