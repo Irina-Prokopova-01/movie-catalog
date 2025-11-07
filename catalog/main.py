@@ -2,6 +2,7 @@ import logging
 
 import uvicorn
 from api import router as api_router
+from api.main_views import router as main_router
 from app_lifspan import lifespan
 from core import config
 from fastapi import FastAPI
@@ -17,18 +18,7 @@ app = FastAPI(
 )
 
 app.include_router(api_router)
-
-
-@app.get("/")
-def read_root(request: Request) -> dict[str, str]:
-    url_docs = request.url.replace(
-        path="/docs",
-        query="",
-    )
-    return {
-        "massage": "Hello World",
-        "url": str(url_docs),
-    }
+app.include_router(main_router)
 
 
 if __name__ == "__main__":
