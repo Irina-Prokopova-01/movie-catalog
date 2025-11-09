@@ -88,7 +88,7 @@ class Storage(BaseModel):
             return self.create(movie_in)
 
         msg = f"Movie {movie_in.slug} already exists."
-        raise MovieAlreadyExistsError(msg)
+        raise MovieAlreadyExistsError(movie_in.slug)
 
     def delete_by_slug(self, slug: str) -> None:
         redis.hdel(
