@@ -8,7 +8,7 @@ from os import getenv
 
 import pytest
 
-from api.api_v1.mouvie_a.crud import storage
+from api.api_v1.mouvie_a.crud import storage, MovieAlreadyExistsError
 from schemas.movie import (
     CreateMovie,
     UpdateMovie,
@@ -113,3 +113,13 @@ class MovieStorageGetMoviesTestCase(TestCase):
             ):
                 db_movie = storage.get_by_slug(movie.slug)
                 self.assertEqual(movie, db_movie)
+
+
+def test_create_or_raise_if_exists():
+    existing_movie = create_movie()
+    movie_create = CreateMovie(**existing_movie.model_dump())
+    # movie_create.slug += "asc"
+    with pytest.raises(MovieAlreadyExistsError) as exc_info:
+        storage.create_or_raise_if_exists(movie_create)
+
+    assert exc_info.value.args[0] == movie_create.slug
