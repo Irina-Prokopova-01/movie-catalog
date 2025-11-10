@@ -1,5 +1,6 @@
 import random
 import string
+from collections.abc import Generator
 from typing import ClassVar
 from unittest import TestCase
 
@@ -33,8 +34,12 @@ def create_movie() -> Movie:
 
 
 @pytest.fixture()
-def movie() -> Movie:
-    return create_movie()
+def movie() -> Generator[Movie]:
+    movie = create_movie()
+    print("Created Movie", movie.slug)
+    yield movie
+    storage.delete(movie)
+    print("Deleted short url %s", movie.slug)
 
 
 class MovieStorageUpdateTestCase(TestCase):
@@ -128,3 +133,4 @@ def test_create_or_raise_if_exists(movie):
         storage.create_or_raise_if_exists(movie_create)
 
     assert exc_info.value.args[0] == movie_create.slug
+    # assert exc_info.value.args[0] == movie_create.slug + "asdf"
