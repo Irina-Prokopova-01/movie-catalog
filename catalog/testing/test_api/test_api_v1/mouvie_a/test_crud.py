@@ -16,30 +16,7 @@ from schemas.movie import (
     Movie,
     UpdatePartialMovie,
 )
-
-
-def create_movie() -> Movie:
-    movie_create_new = CreateMovie(
-        slug="".join(
-            random.choices(
-                string.ascii_uppercase + string.digits,
-                k=8,
-            )
-        ),
-        title="Movie Title",
-        description="Movie Description",
-        year=1999,
-    )
-    return storage.create(movie_create_new)
-
-
-@pytest.fixture()
-def movie() -> Generator[Movie]:
-    movie = create_movie()
-    print("Created Movie", movie.slug)
-    yield movie
-    storage.delete(movie)
-    print("Deleted short url %s", movie.slug)
+from testing.conftest import create_movie
 
 
 class MovieStorageUpdateTestCase(TestCase):
