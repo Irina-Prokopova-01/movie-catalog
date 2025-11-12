@@ -36,8 +36,10 @@ user_basic_auth = HTTPBasic(
 )
 
 
-def read_movie(slug: str) -> Movie:
-    movie: Movie | None = storage.get_by_slug(slug)
+def read_movie(
+    slug: str,
+) -> Movie:
+    movie: Movie | None = storage.get_by_slug(slug=slug)
     if movie:
         return movie
     raise HTTPException(

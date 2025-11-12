@@ -34,10 +34,10 @@ def read_movie_detail(url: MOVIE_DEP) -> Movie:
     "/",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_movie_by_slug(
+def delete_movie(
     movie: MOVIE_DEP,
 ) -> None:
-    storage.delete_by_slug(slug=movie.slug)
+    storage.delete(movie=movie)
 
 
 @router.put(

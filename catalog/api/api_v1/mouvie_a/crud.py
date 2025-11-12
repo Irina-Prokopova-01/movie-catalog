@@ -54,10 +54,10 @@ class Storage(BaseModel):
             )
         ]
 
-    def get_by_slug(self, movie_slug: str) -> Movie | None:
+    def get_by_slug(self, slug: str) -> Movie | None:
         if data := redis.hget(
             name=config.REDIS_MOVIES_HASH_NAME,
-            key=movie_slug,
+            key=slug,
         ):
             assert isinstance(data, str)
             return Movie.model_validate_json(data)
@@ -95,11 +95,9 @@ class Storage(BaseModel):
             config.REDIS_MOVIES_HASH_NAME,
             slug,
         )
-        # self.save_state()
-        log.info("Delete_by_slug movie.")
 
-    def delete(self, movie_delete: Movie) -> None:
-        self.delete_by_slug(slug=movie_delete.slug)
+    def delete(self, movie: Movie) -> None:
+        self.delete_by_slug(slug=movie.slug)
 
     def update(self, movie_base: Movie, movie_update: UpdateMovie) -> Movie:
         for k, v in movie_update:
