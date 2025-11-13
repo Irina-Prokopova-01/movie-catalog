@@ -14,19 +14,34 @@ if getenv("TESTING") != "1":
     )
 
 
-def create_movie() -> Movie:
-    movie_create_new = CreateMovie(
-        slug="".join(
-            random.choices(
-                string.ascii_uppercase + string.digits,
-                k=8,
-            )
-        ),
+def build_create_movie(slug: str) -> CreateMovie:
+    return CreateMovie(
+        slug=slug,
         title="Movie Title",
         description="Movie Description",
         year=1999,
     )
-    return storage.create(movie_create_new)
+
+
+def build_create_movie_random_slug() -> CreateMovie:
+    return build_create_movie(
+        slug="".join(
+            random.choices(
+                string.ascii_uppercase + string.digits,
+                k=8,
+            ),
+        ),
+    )
+
+
+def create_movie(slug: str) -> Movie:
+    movie = build_create_movie(slug)
+    return storage.create(movie)
+
+
+def create_movie_random_slug() -> Movie:
+    movie = build_create_movie_random_slug()
+    return storage.create(movie)
 
 
 @pytest.fixture()

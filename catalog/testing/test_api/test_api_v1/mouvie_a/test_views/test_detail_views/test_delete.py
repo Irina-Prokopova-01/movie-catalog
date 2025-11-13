@@ -10,17 +10,8 @@ from starlette.testclient import TestClient
 from api.api_v1.mouvie_a.crud import storage
 from main import app
 from schemas.movie import Movie, CreateMovie
+from testing.conftest import create_movie
 from testing.test_api.test_api_v1.conftest import auth_client
-
-
-def create_movie(slug: str) -> Movie:
-    movie_create_new = CreateMovie(
-        slug=slug,
-        title="Movie Title",
-        description="Movie Description",
-        year=1999,
-    )
-    return storage.create(movie_create_new)
 
 
 @pytest.fixture(
@@ -31,7 +22,6 @@ def create_movie(slug: str) -> Movie:
         pytest.param("qwerty-foo", id="max-slug"),
     ],
 )
-
 def movie(request: SubRequest) -> Movie:
     print(type(request))
     return create_movie(request.param)
