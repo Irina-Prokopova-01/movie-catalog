@@ -14,16 +14,21 @@ if getenv("TESTING") != "1":
     )
 
 
-def build_create_movie(slug: str) -> CreateMovie:
+def build_create_movie(
+    slug: str,
+    description: str = "Movie Description",
+) -> CreateMovie:
     return CreateMovie(
         slug=slug,
         title="Movie Title",
-        description="Movie Description",
+        description=description,
         year=1999,
     )
 
 
-def build_create_movie_random_slug() -> CreateMovie:
+def build_create_movie_random_slug(
+    description: str = "Movie Description",
+) -> CreateMovie:
     return build_create_movie(
         slug="".join(
             random.choices(
@@ -31,16 +36,22 @@ def build_create_movie_random_slug() -> CreateMovie:
                 k=8,
             ),
         ),
+        description=description,
     )
 
 
-def create_movie(slug: str) -> Movie:
-    movie = build_create_movie(slug)
+def create_movie(
+    slug: str,
+    description: str = "Movie Description",
+) -> Movie:
+    movie = build_create_movie(slug=slug, description=description)
     return storage.create(movie)
 
 
-def create_movie_random_slug() -> Movie:
-    movie = build_create_movie_random_slug()
+def create_movie_random_slug(
+    description: str = "Movie Description",
+) -> Movie:
+    movie = build_create_movie_random_slug(description=description)
     return storage.create(movie)
 
 
