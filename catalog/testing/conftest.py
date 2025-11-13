@@ -17,17 +17,21 @@ if getenv("TESTING") != "1":
 def build_create_movie(
     slug: str,
     description: str = "Movie Description",
+    title: str = "Movie Title",
+    year: int = 2000,
 ) -> CreateMovie:
     return CreateMovie(
         slug=slug,
-        title="Movie Title",
+        title=title,
         description=description,
-        year=1999,
+        year=year,
     )
 
 
 def build_create_movie_random_slug(
     description: str = "Movie Description",
+    title: str = "Movie Title",
+    year: int = 1999,
 ) -> CreateMovie:
     return build_create_movie(
         slug="".join(
@@ -37,21 +41,36 @@ def build_create_movie_random_slug(
             ),
         ),
         description=description,
+        title=title,
+        year=year,
     )
 
 
 def create_movie(
     slug: str,
     description: str = "Movie Description",
+    title: str = "Movie Title",
+    year: int = 1999,
 ) -> Movie:
-    movie = build_create_movie(slug=slug, description=description)
+    movie = build_create_movie(
+        slug=slug,
+        description=description,
+        title=title,
+        year=year,
+    )
     return storage.create(movie)
 
 
 def create_movie_random_slug(
     description: str = "Movie Description",
+    title: str = "Movie Title",
+    year: int = 1999,
 ) -> Movie:
-    movie = build_create_movie_random_slug(description=description)
+    movie = build_create_movie_random_slug(
+        description=description,
+        title=title,
+        year=year,
+    )
     return storage.create(movie)
 
 
