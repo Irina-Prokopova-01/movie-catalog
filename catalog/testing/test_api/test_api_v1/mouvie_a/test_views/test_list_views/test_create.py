@@ -13,6 +13,9 @@ from schemas.movie import CreateMovie, Movie
 from testing.conftest import build_create_movie_random_slug
 
 
+pytestmark = pytest.mark.apitest
+
+
 def test_create_movie(auth_client: TestClient) -> None:
     url = app.url_path_for("create_movie")
     movie_create = CreateMovie(
