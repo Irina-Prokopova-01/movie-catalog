@@ -16,7 +16,7 @@ from schemas.movie import (
     Movie,
     UpdatePartialMovie,
 )
-from testing.conftest import create_movie
+from testing.conftest import create_movie_random_slug
 
 
 class MovieStorageUpdateTestCase(TestCase):
@@ -25,7 +25,7 @@ class MovieStorageUpdateTestCase(TestCase):
             raise OSError(
                 "Environment is not ready for redis testing",
             )
-        self.movie = create_movie()
+        self.movie = create_movie_random_slug()
 
     def tearDown(self) -> None:
         storage.delete(self.movie)
@@ -77,7 +77,7 @@ class MovieStorageGetMoviesTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.movies = [create_movie() for _ in range(cls.MOVIE_COUNT)]
+        cls.movies = [create_movie_random_slug() for _ in range(cls.MOVIE_COUNT)]
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -102,7 +102,7 @@ class MovieStorageGetMoviesTestCase(TestCase):
                 self.assertEqual(movie, db_movie)
 
 
-def test_create_or_raise_if_exists(movie):
+def test_create_or_raise_if_exists(movie: Movie):
     # existing_movie = create_movie()
     movie_create = CreateMovie(**movie.model_dump())
     # movie_create.slug += "asc"
