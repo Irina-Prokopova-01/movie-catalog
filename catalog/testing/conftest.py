@@ -8,10 +8,13 @@ from api.api_v1.mouvie_a.crud import storage
 from api.api_v1.mouvie_a.views.views_list import create_movie
 from schemas.movie import Movie, CreateMovie
 
-if getenv("TESTING") != "1":
-    pytest.exit(
-        "Environment is not ready for pytest testing",
-    )
+
+@pytest.fixture(scope="session", autouse=True)
+def check_testing_env():
+    if getenv("TESTING") != "1":
+        pytest.exit(
+            "Environment is not ready for pytest testing",
+        )
 
 
 def build_create_movie(
@@ -76,7 +79,7 @@ def create_movie_random_slug(
 
 @pytest.fixture()
 def movie() -> Generator[Movie]:
-    movie = create_movie()
+    movie = create_movie_random_slug()
     print("Created Movie", movie.slug)
     yield movie
     storage.delete(movie)
