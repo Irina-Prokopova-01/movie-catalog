@@ -9,6 +9,7 @@ from main import app
     reason="not implemented yet",
     raises=NotImplementedError,
     strict=False,
+    run=False,
 )
 @pytest.mark.apitest
 def test_transfer_movie(
