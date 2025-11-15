@@ -80,7 +80,7 @@ class Storage(BaseModel):
             **movie_create_new.model_dump(),
         )
         self.save_movie(new_movie)
-        log.info("Created new movie.")
+        log.info("Created new movie.%s", new_movie)
         return new_movie
 
     def create_or_raise_if_exists(self, movie_in: CreateMovie) -> Movie:
