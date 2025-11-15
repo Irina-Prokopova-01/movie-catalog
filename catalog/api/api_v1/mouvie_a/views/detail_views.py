@@ -70,3 +70,15 @@ def update_partial_movie(
         movie_base=movie,
         movie_update_in=movie_update_in,
     )
+
+
+@router.post(
+    "/transfer/",
+)
+def transfer_movie(
+    # url: ShortUrlBySlug,
+) -> dict[str, str]:
+    # 1 / 0
+    # начинаем что-то делать...
+    # raise NotImplementedError
+    return {"result": "work in progress"}
