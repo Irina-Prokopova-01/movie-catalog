@@ -10,6 +10,8 @@ from main import app
 from schemas.movie import Movie
 from testing.conftest import create_movie
 
+pytestmark = pytest.mark.apitest
+
 
 class TestUpdatePartial:
     @pytest.fixture

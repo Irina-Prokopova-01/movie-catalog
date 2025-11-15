@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from testing.test_api.test_api_v1.conftest import client
 
 
-# client = TestClient(app)
+pytestmark = pytest.mark.apitest
 
 
 def test_root_view(client: TestClient) -> None:
