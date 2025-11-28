@@ -1,7 +1,7 @@
 #FastAPI movie-catalog
 ## Develop
 
-Steps:
+Step:
 
 Right click "catalog"-> Mark Directory as -> Sources Root
 
