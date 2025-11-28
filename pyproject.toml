@@ -157,3 +157,8 @@ unfixable = []
 "stuff.py" = [
     "T20", # flake8-print (T20)
 ]
+
+[tool.uv.workspace]
+members = [
+    "catalog",
+]
