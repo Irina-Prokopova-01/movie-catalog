@@ -1,18 +1,16 @@
 import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
-from testing.test_api.test_api_v1.conftest import client
-
 
 pytestmark = pytest.mark.apitest
 
 
 def test_root_view(client: TestClient) -> None:
     response = client.get("/")
-    print(type(response))
+    # print(type(response))
     assert response.status_code == status.HTTP_200_OK, response.text
     response_data = response.json()
-    expected_message = f"Hello World"
+    expected_message = "Hello World"
     assert response_data["message"] == expected_message, response_data
 
 
@@ -23,7 +21,7 @@ def test_root_view(client: TestClient) -> None:
         "Irina",
         "Andrey",
         "",
-        "Dmitry Prokopov" "!@#$%%^^",
+        "Dmitry Prokopov!@#$%%^^",
     ],
 )
 def test_root_view_custom_name(name: str, client: TestClient) -> None:

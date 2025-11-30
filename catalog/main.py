@@ -1,12 +1,12 @@
 import logging
 
 import uvicorn
+from fastapi import FastAPI
+
 from api import router as api_router
 from api.main_views import router as main_router
 from app_lifspan import lifespan
 from core import config
-from fastapi import FastAPI
-from starlette.requests import Request
 
 logging.basicConfig(
     level=config.LOG_LEVEL,

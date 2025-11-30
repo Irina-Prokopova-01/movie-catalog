@@ -2,15 +2,15 @@ import random
 import string
 from collections.abc import Generator
 from os import getenv
+
 import pytest
 
 from api.api_v1.mouvie_a.crud import storage
-from api.api_v1.mouvie_a.views.views_list import create_movie
-from schemas.movie import Movie, CreateMovie
+from schemas.movie import CreateMovie, Movie
 
 
 @pytest.fixture(scope="session", autouse=True)
-def check_testing_env():
+def check_testing_env()->None:
     if getenv("TESTING") != "1":
         pytest.exit(
             "Environment is not ready for pytest testing",
@@ -80,7 +80,7 @@ def create_movie_random_slug(
 @pytest.fixture()
 def movie() -> Generator[Movie]:
     movie = create_movie_random_slug()
-    print("Created Movie", movie.slug)
+    # print("Created Movie", movie.slug)
     yield movie
     storage.delete(movie)
-    print("Deleted short url %s", movie.slug)
+    # print("Deleted short url %s", movie.slug)

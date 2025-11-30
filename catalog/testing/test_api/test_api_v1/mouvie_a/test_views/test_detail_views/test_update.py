@@ -7,7 +7,7 @@ from starlette.testclient import TestClient
 
 from api.api_v1.mouvie_a.crud import storage
 from main import app
-from schemas.movie import Movie, CreateMovie, UpdateMovie
+from schemas.movie import Movie, UpdateMovie
 from testing.conftest import create_movie_random_slug
 
 

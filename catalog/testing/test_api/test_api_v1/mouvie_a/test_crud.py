@@ -1,19 +1,14 @@
-import random
-import string
-from collections.abc import Generator
+from os import getenv
 from typing import ClassVar
 from unittest import TestCase
 
-
-from os import getenv
-
 import pytest
 
-from api.api_v1.mouvie_a.crud import storage, MovieAlreadyExistsError
+from api.api_v1.mouvie_a.crud import MovieAlreadyExistsError, storage
 from schemas.movie import (
     CreateMovie,
-    UpdateMovie,
     Movie,
+    UpdateMovie,
     UpdatePartialMovie,
 )
 from testing.conftest import create_movie_random_slug
@@ -56,6 +51,10 @@ class MovieStorageUpdateTestCase(TestCase):
             **self.movie.model_dump(),
         )
         source_description = self.movie.description
+        if source_description is not None:
+            movie_update_partial.description = source_description * 2
+        else:
+            movie_update_partial.description = "default_description"
         movie_update_partial.description *= 2
         movie_update_partial_storage = storage.update_partial(
             movie_base=self.movie,
@@ -102,7 +101,7 @@ class MovieStorageGetMoviesTestCase(TestCase):
                 self.assertEqual(movie, db_movie)
 
 
-def test_create_or_raise_if_exists(movie: Movie):
+def test_create_or_raise_if_exists(movie: Movie)->None:
     # existing_movie = create_movie()
     movie_create = CreateMovie(**movie.model_dump())
     # movie_create.slug += "asc"

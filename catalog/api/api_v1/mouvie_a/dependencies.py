@@ -13,10 +13,10 @@ from fastapi.security import (
     HTTPBasicCredentials,
     HTTPBearer,
 )
-from schemas.movie import Movie
 
 from api.api_v1.auth.services import redis_tokens, redis_users
 from api.api_v1.mouvie_a.crud import storage
+from schemas.movie import Movie
 
 log = logging.getLogger(__name__)
 

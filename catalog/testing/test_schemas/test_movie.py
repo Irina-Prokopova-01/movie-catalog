@@ -1,13 +1,12 @@
 from unittest import TestCase
 
-from dns.update import Update
 from pydantic import ValidationError
 
 from schemas.movie import CreateMovie, Movie, UpdateMovie, UpdatePartialMovie
 
 
 class MovieCreateTestCase(TestCase):
-    def test_movie_can_be_created_from_created_schemas(self):
+    def test_movie_can_be_created_from_created_schemas(self)-> None:
         movie_in = CreateMovie(
             slug="some-slug",
             description="Some description",
@@ -34,7 +33,7 @@ class MovieCreateTestCase(TestCase):
             movie_in.year,
         )
 
-    def test_movie_can_be_update_from_schemas(self):
+    def test_movie_can_be_update_from_schemas(self)-> None:
         movie_in = UpdateMovie(
             description="Some description",
             title="Some title",
@@ -80,7 +79,7 @@ class MovieCreateTestCase(TestCase):
             movie_in.year,
         )
 
-    def test_movie_create_accepts_different_urls(self) -> None:
+    def test_movie_create_accepts_different_title(self) -> None:
         title_movies = [
             "movie1",
             "movie2",
@@ -110,9 +109,9 @@ class MovieCreateTestCase(TestCase):
                 title="Some title",
                 year=1999,
             )
-        print(exc_info.exception)
-        print(exc_info.exception.json())
-        print(exc_info.exception.errors())
+        # print(exc_info.exception)
+        # print(exc_info.exception.json())
+        # print(exc_info.exception.errors())
         error_details = exc_info.exception.errors()[0]
         expected_type = "string_too_short"
         self.assertEqual(expected_type, error_details["type"])

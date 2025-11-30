@@ -1,17 +1,13 @@
-import random
-import string
 
 import pytest
 from _pytest.fixtures import SubRequest
 from starlette import status
-from starlette.requests import Request
 from starlette.testclient import TestClient
 
 from api.api_v1.mouvie_a.crud import storage
 from main import app
-from schemas.movie import Movie, CreateMovie
+from schemas.movie import Movie
 from testing.conftest import create_movie
-from testing.test_api.test_api_v1.conftest import auth_client
 
 
 @pytest.fixture(
@@ -23,7 +19,7 @@ from testing.test_api.test_api_v1.conftest import auth_client
     ],
 )
 def movie(request: SubRequest) -> Movie:
-    print(type(request))
+    # print(type(request))
     return create_movie(request.param)
 
 

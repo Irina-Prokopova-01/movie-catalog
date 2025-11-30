@@ -1,18 +1,16 @@
 import logging
 import random
 import string
-from http.client import responses
 from typing import Any
 
 import pytest
 from _pytest.fixtures import SubRequest
-from fastapi.testclient import TestClient
 from fastapi import status
+from fastapi.testclient import TestClient
 
 from main import app
 from schemas.movie import CreateMovie, Movie
 from testing.conftest import build_create_movie_random_slug
-
 
 pytestmark = pytest.mark.apitest
 
@@ -64,14 +62,14 @@ class TestCreateInvalid:
         params=[
             pytest.param(("a", "string_too_short"), id="too-short"),
             pytest.param(("qwerty-foo-param", "string_too_long"), id="max-slug"),
-        ]
+        ],
     )
     def movie_create_values(self, request: SubRequest) -> tuple[dict[str, Any], str]:
         movie = build_create_movie_random_slug()
         data = movie.model_dump(mode="json")
         slug, err_type = request.param
         data["slug"] = slug
-        print(slug, err_type)
+        # print(slug, err_type)
         return data, err_type
 
     def test_invalid_slug(

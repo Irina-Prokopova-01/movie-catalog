@@ -55,7 +55,7 @@ class TestUpdatePartial:
         auth_client: TestClient,
         new_description: str,
         movie: Movie,
-    ):
+    )-> None:
         url = app.url_path_for(
             "update_partial_movie",
             slug=movie.slug,
@@ -66,4 +66,5 @@ class TestUpdatePartial:
         )
         assert response.status_code == status.HTTP_200_OK, response.text
         movie_db = storage.get_by_slug(movie.slug)
+        assert movie_db is not None, f"Movie with slug {movie.slug} not found."
         assert movie_db.description == new_description

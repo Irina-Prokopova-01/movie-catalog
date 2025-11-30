@@ -4,14 +4,11 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api.api_v1.auth.services import redis_tokens
-from api.api_v1.mouvie_a.crud import storage
-from api.api_v1.mouvie_a.views.views_list import create_movie
 from main import app
-from schemas.movie import Movie
 
 
 @pytest.fixture()
-def client() -> Generator[TestClient, None, None]:
+def client() -> Generator[TestClient]:
     with TestClient(app) as client:
         yield client
 

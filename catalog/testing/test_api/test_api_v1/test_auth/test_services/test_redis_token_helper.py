@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 from api.api_v1.auth.services import redis_tokens
-from os import getenv
 
 
 class RedisTokensHelperTestCase(TestCase):
