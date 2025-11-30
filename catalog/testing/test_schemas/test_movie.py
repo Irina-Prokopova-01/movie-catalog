@@ -6,7 +6,7 @@ from schemas.movie import CreateMovie, Movie, UpdateMovie, UpdatePartialMovie
 
 
 class MovieCreateTestCase(TestCase):
-    def test_movie_can_be_created_from_created_schemas(self)-> None:
+    def test_movie_can_be_created_from_created_schemas(self) -> None:
         movie_in = CreateMovie(
             slug="some-slug",
             description="Some description",
@@ -33,7 +33,7 @@ class MovieCreateTestCase(TestCase):
             movie_in.year,
         )
 
-    def test_movie_can_be_update_from_schemas(self)-> None:
+    def test_movie_can_be_update_from_schemas(self) -> None:
         movie_in = UpdateMovie(
             description="Some description",
             title="Some title",

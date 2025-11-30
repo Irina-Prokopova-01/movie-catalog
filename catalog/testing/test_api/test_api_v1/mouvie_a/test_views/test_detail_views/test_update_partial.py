@@ -55,7 +55,7 @@ class TestUpdatePartial:
         auth_client: TestClient,
         new_description: str,
         movie: Movie,
-    )-> None:
+    ) -> None:
         url = app.url_path_for(
             "update_partial_movie",
             slug=movie.slug,

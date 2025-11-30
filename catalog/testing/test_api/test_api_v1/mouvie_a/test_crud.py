@@ -101,7 +101,7 @@ class MovieStorageGetMoviesTestCase(TestCase):
                 self.assertEqual(movie, db_movie)
 
 
-def test_create_or_raise_if_exists(movie: Movie)->None:
+def test_create_or_raise_if_exists(movie: Movie) -> None:
     # existing_movie = create_movie()
     movie_create = CreateMovie(**movie.model_dump())
     # movie_create.slug += "asc"
