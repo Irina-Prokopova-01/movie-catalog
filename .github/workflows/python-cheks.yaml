@@ -39,4 +39,4 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
       - name: Run mypy
-        run: uv run mypy catalog
+        run: uv run mypy .
