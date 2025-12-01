@@ -42,7 +42,7 @@ jobs:
         with:
           version-file: 'pyproject.toml'
       - name: Run mypy
-        run: uv run mypy url-shortener
+        run: uv run mypy catalog
   run-tests:
     runs-on: ubuntu-latest
     needs:
