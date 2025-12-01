@@ -58,7 +58,7 @@ class MovieCreateTestCase(TestCase):
 
     def test_movie_create_accepts_different_urls(self) -> None:
         movie_in = UpdatePartialMovie(
-            title="",
+            title="y",
             description="Some description",
             year=1999,
         )

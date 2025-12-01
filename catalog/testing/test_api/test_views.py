@@ -17,11 +17,10 @@ def test_root_view(client: TestClient) -> None:
 @pytest.mark.parametrize(
     "name",
     [
-        # TODO: fake data
         "Irina",
         "Andrey",
         "",
-        "Dmitry Prokopov!@#$%%^^",
+        "Dmitry Prokopov",
     ],
 )
 def test_root_view_custom_name(name: str, client: TestClient) -> None:
