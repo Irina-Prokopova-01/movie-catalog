@@ -23,7 +23,7 @@ USERS_DB: dict[str, str] = {
     "bob": "pass2",
 }
 
-REDIS_HOST = "localhost"
+REDIS_HOST = getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(getenv("REDIS_PORT", 0)) or 6379
 REDIS_DB = 0
 REDIS_DB_TOKENS = 1
