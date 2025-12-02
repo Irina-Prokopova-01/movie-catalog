@@ -6,7 +6,7 @@
 [![Lint: Ruff](https://img.shields.io/badge/lint-ruff-%23efc000?logo=ruff&logoColor=white&style=for-the-badge)](https://github.com/astral-sh/ruff)
 [![Type Checking: mypy](https://img.shields.io/badge/type%20checking-mypy-blueviolet?logo=python&style=for-the-badge)](https://github.com/python/mypy)
 [![Dependency: uv](https://img.shields.io/badge/dependencies-uv-4B8BBE?logo=python&style=for-the-badge)](https://github.com/astral-sh/uv)
-
+[![Codecov](https://codecov.io/gh/Irina-Prokopova-01/movie-catalog/branch/main/graph/badge.svg)](https://codecov.io/gh/Irina-Prokopova-01/movie-catalog)
 
 ## Develop
 
