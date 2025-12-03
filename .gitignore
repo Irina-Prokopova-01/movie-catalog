@@ -162,3 +162,4 @@ cython_debug/
 .idea/
 movie_list.json
 .secrets.py
+codecov.json

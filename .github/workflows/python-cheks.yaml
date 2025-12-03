@@ -72,31 +72,58 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked --all-extras --dev
       - name: Run python tests
-        run: uv run pytest catalog --cov=catalog --cov-report=xml:coverage.xml
+        run: uv run pytest catalog--cov=catalog --cov-report=xml:coverage.xml
         env:
           TESTING: 1
           REDIS_PORT: 6379
-      - name: Prepare coverage percentage
-        run: |
-          export EXTRACTED_COVERAGE=$(python -c 'import json; print(json.load(open("coverage.json"))["totals"]["percent_covered_display"])')
-          echo "TOTAL_COVERAGE=$EXTRACTED_COVERAGE" >> $GITHUB_ENV
-          echo "### Tests coverage: ${EXTRACTED_COVERAGE}%" >> $GITHUB_STEP_SUMMARY
-      - name: Update coverage badge
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: 974c60a7707fee6314a485fa9a86b39d
-          filename: coverage.json
-          label: Coverage
-          message: ${{ env.TOTAL_COVERAGE }}%
-          minColorRange: 70
-          maxColorRange: 90
-          valColorRange: ${{ env.TOTAL_COVERAGE }}
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
-        if: ${{ !github.event.act }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
           dry_run: ${{ env.ACT }}
           fail_ci_if_error: 'true'
+
+
+
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/setup-python@v5
+#        with:
+#          python-version-file: '.python-version'
+#      - name: Setup uv
+#        uses: astral-sh/setup-uv@v5
+#        with:
+#          pyproject-file: 'pyproject.toml'
+#          enable-cache: true
+#      - name: Install dependencies
+#        run: uv sync --locked --all-extras --dev
+#      - name: Run python tests
+#        run: uv run pytest catalog --cov=catalog --cov-report=xml:coverage.xml
+#        env:
+#          TESTING: 1
+#          REDIS_PORT: 6379
+#      - name: Prepare coverage percentage
+#        run: |
+#          export EXTRACTED_COVERAGE=$(python -c 'import json; print(json.load(open("coverage.json"))["totals"]["percent_covered_display"])')
+#          echo "TOTAL_COVERAGE=$EXTRACTED_COVERAGE" >> $GITHUB_ENV
+#          echo "### Tests coverage: ${EXTRACTED_COVERAGE}%" >> $GITHUB_STEP_SUMMARY
+#      - name: Update coverage badge
+#        uses: schneegans/dynamic-badges-action@v1.7.0
+#        with:
+#          auth: ${{ secrets.GIST_TOKEN }}
+#          gistID: 974c60a7707fee6314a485fa9a86b39d
+#          filename: coverage.json
+#          label: Coverage
+#          message: ${{ env.TOTAL_COVERAGE }}%
+#          minColorRange: 70
+#          maxColorRange: 90
+#          valColorRange: ${{ env.TOTAL_COVERAGE }}
+#      - name: Upload coverage reports to Codecov
+#        uses: codecov/codecov-action@v5
+#        if: ${{ !github.event.act }}
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          files: coverage.xml
+#          dry_run: ${{ env.ACT }}
+#          fail_ci_if_error: 'true'
