@@ -1,34 +1,62 @@
 import logging
-from os import getenv
 from pathlib import Path
+from typing import Literal
+
+from pydantic import BaseModel
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-MOVIE_STORAGE_FILEPATH = BASE_DIR / "movie_list.json"
 
-# C:\Users\User\PycharmProjects\movie-catalog\catalog\core\config.py
-LOG_LEVEL = logging.INFO
 LOG_FORMAT: str = (
     "[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s"
 )
 
-API_TOKENS: frozenset[str] = frozenset(
-    {
-        "Ykn4HsTExNoSwPAmwEt-3Q",
-        "rrSpMES6ozOvoxQKTTGc8g",
-    },
-)
 
-USERS_DB: dict[str, str] = {
-    "sam": "passw1",
-    "bob": "pass2",
-}
+class LoggingConfig(BaseModel):
+    log_format: str = LOG_FORMAT
+    log_level_name: Literal[
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "CRITICAL",
+    ] = ""
+    date_format: str = "%Y-%m-%d %H:%M:%S"
 
-REDIS_HOST = getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(getenv("REDIS_PORT", 0)) or 6379
-REDIS_DB = 0
-REDIS_DB_TOKENS = 1
-REDIS_DB_USERS = 2
-REDIS_DB_MOVIES = 3
+    @property
+    def log_level(self) -> int:
+        return logging.getLevelNamesMapping()[self.log_level_name]
 
-REDIS_TOKENS_SET_NAME = "tokens"
-REDIS_MOVIES_HASH_NAME = "movies-hash"
+
+class RedisConnectionConfig(BaseModel):
+    host: str = "localhost"
+    port: int = 6379
+
+
+class RedisCollectionNameConfig(BaseModel):
+    tokens_set: str = "tokens"
+    movie_hash_name: str = "movies-hash"
+
+
+class RedisDataBaseConfig(BaseSettings):
+    default: int = 0
+    tokens: int = 1
+    users: int = 2
+    movies: int = 3
+
+
+class RedisConfig(BaseModel):
+    connection: RedisConnectionConfig = RedisConnectionConfig()
+    collection_names: RedisCollectionNameConfig = RedisCollectionNameConfig()
+    db: RedisDataBaseConfig = RedisDataBaseConfig()
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(cli_parse_args=True)
+    redis: RedisConfig = RedisConfig()
+    logging: LoggingConfig = LoggingConfig()
+
+
+settings = Settings()
+# print(settings.logging)
+# print(settings.logging.log_level)

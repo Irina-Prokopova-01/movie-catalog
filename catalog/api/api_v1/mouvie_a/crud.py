@@ -7,7 +7,7 @@ from typing import cast
 from pydantic import BaseModel
 from redis import Redis
 
-from core import config
+from core.config import settings
 from schemas.movie import (
     CreateMovie,
     Movie,
@@ -15,14 +15,14 @@ from schemas.movie import (
     UpdatePartialMovie,
 )
 
+log = logging.getLogger(__name__)
+
 redis = Redis(
-    host=config.REDIS_HOST,
-    port=config.REDIS_PORT,
-    db=config.REDIS_DB_MOVIES,
+    host=settings.redis.connection.host,
+    port=settings.redis.connection.port,
+    db=settings.redis.db.movies,
     decode_responses=True,
 )
-
-log = logging.getLogger(__name__)
 
 
 class MovieBaseError(Exception):
@@ -38,10 +38,11 @@ class MovieAlreadyExistsError(MovieBaseError):
 
 
 class Storage(BaseModel):
+    hash_name: str
 
     def save_movie(self, new_movie: Movie) -> None:
         redis.hset(
-            name=config.REDIS_MOVIES_HASH_NAME,
+            name=self.hash_name,
             key=new_movie.slug,
             value=new_movie.model_dump_json(),
         )
@@ -51,13 +52,13 @@ class Storage(BaseModel):
             Movie.model_validate_json(movie)
             for movie in cast(
                 Iterable[str],
-                redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
+                redis.hvals(name=self.hash_name),
             )
         ]
 
     def get_by_slug(self, slug: str) -> Movie | None:
         if data := redis.hget(
-            name=config.REDIS_MOVIES_HASH_NAME,
+            name=self.hash_name,
             key=slug,
         ):
             assert isinstance(data, str)
@@ -71,7 +72,7 @@ class Storage(BaseModel):
         return cast(
             bool,
             redis.hexists(
-                name=config.REDIS_MOVIES_HASH_NAME,
+                name=self.hash_name,
                 key=slug,
             ),
         )
@@ -93,7 +94,7 @@ class Storage(BaseModel):
 
     def delete_by_slug(self, slug: str) -> None:
         redis.hdel(
-            config.REDIS_MOVIES_HASH_NAME,
+            self.hash_name,
             slug,
         )
 
@@ -121,4 +122,6 @@ class Storage(BaseModel):
         return movie_base
 
 
-storage = Storage()
+storage = Storage(
+    hash_name=settings.redis.collection_names.movie_hash_name,
+)
