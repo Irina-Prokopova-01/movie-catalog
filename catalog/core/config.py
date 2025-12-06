@@ -52,11 +52,19 @@ class RedisConfig(BaseModel):
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(cli_parse_args=True)
+    model_config = SettingsConfigDict(
+        env_file=(
+            BASE_DIR / ".env.template",
+            BASE_DIR / ".env",
+        ),
+        env_prefix="CATALOG__",
+        env_nested_delimiter="__",
+    )
     redis: RedisConfig = RedisConfig()
     logging: LoggingConfig = LoggingConfig()
 
 
 settings = Settings()
 # print(settings.logging)
+# print(settings.redis.db)
 # print(settings.logging.log_level)
