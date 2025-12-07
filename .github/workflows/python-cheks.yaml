@@ -60,14 +60,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'  # Укажите необходимую версию Node.js
-
-      - name: Install dependencies
-        run: |
-            npm install  # Установите зависимости вашего проекта Node.js
       - uses: actions/setup-python@v5
         with:
           python-version-file: '.python-version'
@@ -84,13 +76,13 @@ jobs:
           TESTING: 1
           CATALOG__REDIS__CONNECTION__HOST: redis
           CATALOG__REDIS__CONNECTION__PORT: 6379
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage.xml
-          dry_run: ${{ env.ACT }}
-          fail_ci_if_error: 'true'
+#      - name: Upload coverage reports to Codecov
+#        uses: codecov/codecov-action@v5
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          files: coverage.xml
+#          dry_run: ${{ env.ACT }}
+#          fail_ci_if_error: 'true'
 
 
 
