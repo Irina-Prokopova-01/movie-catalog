@@ -60,6 +60,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Укажите необходимую версию Node.js
+
+      - name: Install dependencies
+        run: |
+            npm install  # Установите зависимости вашего проекта Node.js
       - uses: actions/setup-python@v5
         with:
           python-version-file: '.python-version'
