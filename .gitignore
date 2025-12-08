@@ -163,3 +163,4 @@ cython_debug/
 movie_list.json
 .secrets.py
 codecov.json
+config.local.yaml
