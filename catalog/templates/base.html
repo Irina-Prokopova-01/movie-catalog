@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
     {% block title %}
-      MOVIE CATALOG!
+    MOVIE CATALOG!
     {% endblock %}
   </title>
   <link
@@ -15,13 +15,16 @@
     crossorigin="anonymous">
 </head>
 <body>
+<header>
+  {% include 'components/navbar.html' %}
+</header>
 <main class="container">
   {% block main %}
   {% endblock %}
 </main>
 <footer class="mt-5 ms-5">
   {% block footer %}
-    &copy Irina Prokopova {{ today.year }}
+  &copy Irina Prokopova {{ today.year }}
   {% endblock %}
 </footer>
 
