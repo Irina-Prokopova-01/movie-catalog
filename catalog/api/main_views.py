@@ -15,10 +15,11 @@ router = APIRouter(
 
 @router.get(
     "/",
+    name="home",
     response_class=HTMLResponse,
     include_in_schema=False,
 )
-def read_root(
+def home_page(
     request: Request,
 ) -> HTMLResponse:
     context = {}
@@ -39,6 +40,7 @@ def read_root(
 
 @router.get(
     "/about/",
+    name="about",
     response_class=HTMLResponse,
     include_in_schema=False,
 )
