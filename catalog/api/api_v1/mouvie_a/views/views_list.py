@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from api.api_v1.mouvie_a.crud import MovieAlreadyExistsError, storage
+from storage.movie_a.crud import storage
+from storage.movie_a.exeptions import MovieAlreadyExistsError
 from api.api_v1.mouvie_a.dependencies import (
     api_token_or_user_basic_auth_required_for_unsafe_methods,
 )

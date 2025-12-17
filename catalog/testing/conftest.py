@@ -5,7 +5,7 @@ from os import getenv
 
 import pytest
 
-from api.api_v1.mouvie_a.crud import storage
+from storage.movie_a.crud import storage
 from schemas.movie import CreateMovie, Movie
 
 

@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from api.api_v1.mouvie_a.crud import storage
+from storage.movie_a.crud import storage
 from api.api_v1.mouvie_a.dependencies import read_movie
 from schemas.movie import Movie, MovieRead, UpdateMovie, UpdatePartialMovie
 

@@ -15,7 +15,7 @@ from fastapi.security import (
 )
 
 from api.api_v1.auth.services import redis_tokens, redis_users
-from api.api_v1.mouvie_a.crud import storage
+from storage.movie_a.crud import storage
 from schemas.movie import Movie
 
 log = logging.getLogger(__name__)

@@ -4,7 +4,8 @@ from unittest import TestCase
 
 import pytest
 
-from api.api_v1.mouvie_a.crud import MovieAlreadyExistsError, storage
+from storage.movie_a.crud import storage
+from storage.movie_a.exeptions import MovieAlreadyExistsError
 from schemas.movie import (
     CreateMovie,
     Movie,

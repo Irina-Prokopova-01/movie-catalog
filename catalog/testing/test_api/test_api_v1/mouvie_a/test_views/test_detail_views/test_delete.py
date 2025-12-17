@@ -3,7 +3,7 @@ from _pytest.fixtures import SubRequest
 from starlette import status
 from starlette.testclient import TestClient
 
-from api.api_v1.mouvie_a.crud import storage
+from storage.movie_a.crud import storage
 from main import app
 from schemas.movie import Movie
 from testing.conftest import create_movie
