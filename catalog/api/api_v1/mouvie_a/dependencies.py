@@ -15,7 +15,7 @@ from fastapi.security import (
 )
 
 from api.api_v1.auth.services import redis_tokens, redis_users
-from storage.movie_a.crud import storage
+from dependencies.movie_a import GetMovieStorage
 from schemas.movie import Movie
 
 log = logging.getLogger(__name__)
@@ -38,6 +38,7 @@ user_basic_auth = HTTPBasic(
 
 def read_movie(
     slug: str,
+    storage: GetMovieStorage,
 ) -> Movie:
     movie: Movie | None = storage.get_by_slug(slug=slug)
     if movie:
